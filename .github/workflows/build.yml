@@ -30,24 +30,19 @@ jobs:
           mv main.dart lib/main.dart
           flutter pub add flutter_bluetooth_serial permission_handler
 
-      - name: Forcer SDK Android 21 et Reparer les Namespaces en amont
+      - name: Forcer SDK Android 21 et Reparer le Namespace Bluetooth
         run: |
           # 1. Ajustement de la version minimale d'Android
           sed -i 's/minSdkVersion flutter.minSdkVersion/minSdkVersion 21/g' android/app/build.gradle
           
-          # 2. Injection de la boucle de correction prioritaire dans settings.gradle
-          cat << 'EOF' >> android/settings.gradle
-          
-          gradle.lifecycle.beforeProject { project ->
-              if (project.plugins.hasPlugin('com.android.library') || project.plugins.hasPlugin('com.android.application')) {
-                  project.android {
-                      if (namespace == null) {
-                          namespace = project.group.toString()
-                      }
-                  }
-              }
-          }
-          EOF
+          # 2. Localiser le fichier de l'extension Bluetooth et y injecter physiquement le namespace requis
+          BT_BUILD_GRADLE=$(find ~/.pub-cache -name "build.gradle" | grep "flutter_bluetooth_serial")
+          if [ -f "$BT_BUILD_GRADLE" ]; then
+            sed -i '/android {/a \    namespace "io.github.edufolly.flutter_bluetooth_serial"' "$BT_BUILD_GRADLE"
+            echo "Namespace injecte avec succes dans : $BT_BUILD_GRADLE"
+          else
+            echo "Fichier de l'extension introuvable dans le cache"
+          fi
 
       - name: Compiler l'APK Release
         run: flutter build apk --split-per-abi
