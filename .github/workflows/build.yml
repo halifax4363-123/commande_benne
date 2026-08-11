@@ -35,15 +35,14 @@ jobs:
           # 1. Ajustement de la version minimale d'Android
           sed -i 's/minSdkVersion flutter.minSdkVersion/minSdkVersion 21/g' android/app/build.gradle
           
-          # 2. Injection de la boucle officielle de correction des namespaces de dépendances
+          # 2. Injection de la boucle robuste de correction des namespaces
           cat << 'EOF' >> android/build.gradle
           subprojects {
-              afterEvaluate { project ->
-                  if (project.hasProperty('android')) {
-                      project.android {
-                          if (namespace == null) {
-                              namespace = project.group.toString()
-                          }
+              project.evaluationDependsOn(':app')
+              if (project.hasProperty('android')) {
+                  project.android {
+                      if (namespace == null) {
+                          namespace = project.group.toString()
                       }
                   }
               }
