@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Configurer Java
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: 'zulu'
           java-version: '17'
@@ -35,7 +35,7 @@ jobs:
           # 1. Ajustement de la version minimale d'Android
           sed -i 's/minSdkVersion flutter.minSdkVersion/minSdkVersion 21/g' android/app/build.gradle
           
-          # 2. Injection automatique du namespace manquant pour l'extension Bluetooth
+          # 2. Injection du namespace pour l'extension Bluetooth
           echo "subprojects { afterEvaluate { project -> if (project.hasProperty('android')) { project.android { if (namespace == null) { namespace project.group } } } } }" >> android/build.gradle
 
       - name: Compiler l'APK Release
