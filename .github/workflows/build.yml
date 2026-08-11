@@ -21,7 +21,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
-          flutter-version: '3.24.5'
+          flutter-version: '3.19.6' # Version stable idéale avec les anciennes extensions Bluetooth
 
       - name: Creer la structure Flutter
         run: |
@@ -30,19 +30,13 @@ jobs:
           mv main.dart lib/main.dart
           flutter pub add flutter_bluetooth_serial permission_handler
 
-      - name: Forcer SDK Android 21 et Reparer le Namespace Bluetooth
+      - name: Forcer les règles de compatibilité Android
         run: |
           # 1. Ajustement de la version minimale d'Android
           sed -i 's/minSdkVersion flutter.minSdkVersion/minSdkVersion 21/g' android/app/build.gradle
           
-          # 2. Localiser le fichier de l'extension Bluetooth et y injecter physiquement le namespace requis
-          BT_BUILD_GRADLE=$(find ~/.pub-cache -name "build.gradle" | grep "flutter_bluetooth_serial")
-          if [ -f "$BT_BUILD_GRADLE" ]; then
-            sed -i '/android {/a \    namespace "io.github.edufolly.flutter_bluetooth_serial"' "$BT_BUILD_GRADLE"
-            echo "Namespace injecte avec succes dans : $BT_BUILD_GRADLE"
-          else
-            echo "Fichier de l'extension introuvable dans le cache"
-          fi
+          # 2. Désactivation de la vérification stricte du Namespace pour Gradle
+          echo "android.defaults.buildfeatures.namespace=true" >> android/local.properties
 
       - name: Compiler l'APK Release
         run: flutter build apk --split-per-abi
