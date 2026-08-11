@@ -35,8 +35,20 @@ jobs:
           # 1. Ajustement de la version minimale d'Android
           sed -i 's/minSdkVersion flutter.minSdkVersion/minSdkVersion 21/g' android/app/build.gradle
           
-          # 2. Injection directe du namespace au bon endroit dans les sous-projets
-          echo "gradle.projectsEvaluated { subprojects { if (hasProperty('android')) { android { if (namespace == null) { namespace project.group } } } } }" >> android/build.gradle
+          # 2. Injection de la boucle officielle de correction des namespaces de dépendances
+          cat << 'EOF' >> android/build.gradle
+          subprojects {
+              afterEvaluate { project ->
+                  if (project.hasProperty('android')) {
+                      project.android {
+                          if (namespace == null) {
+                              namespace = project.group.toString()
+                          }
+                      }
+                  }
+              }
+          }
+          EOF
 
       - name: Compiler l'APK Release
         run: flutter build apk --split-per-abi
