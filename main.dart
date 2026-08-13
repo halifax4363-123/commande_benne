@@ -41,7 +41,7 @@ class _RemoteScreenState extends State<RemoteScreen> {
   bool verinRetracte = false;
 
   String statusMessage = "Déconnecté";
-  String targetDeviceName = "Connexion benne";
+  String targetDeviceName = "HC-05";
   
   // Variables de télémétrie
   double tensionBatterie = 0.0;
