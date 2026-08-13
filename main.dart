@@ -80,12 +80,12 @@ class _RemoteScreenState extends State<RemoteScreen> {
 
       if (targetDevice != null) {
         setState(() {
-          statusMessage = "Connexion à ${targetDevice!.name}...";
+          statusMessage = "Connexion en cours..."; // Message plus propre pendant la recherche
         });
         connection = await BluetoothConnection.toAddress(targetDevice.address);
         setState(() {
           isConnected = true;
-          statusMessage = "Connecté à ${targetDevice!.name}";
+          statusMessage = "Connexion établie"; // Votre texte parfait sans mention du HC-05
           // Au démarrage, autorise les deux mouvements dans le doute
           verinEtendu = false;
           verinRetracte = false;
