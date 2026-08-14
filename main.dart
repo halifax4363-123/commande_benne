@@ -99,8 +99,9 @@ class _RemoteScreenState extends State<RemoteScreen> {
           });
         });
       } else {
+
         setState(() {
-          statusMessage = "Bluetooth non appairé dans Android";
+          statusMessage = "Bluetooth non connecté";
         });
       }
     } catch (e) {
@@ -254,33 +255,7 @@ class _RemoteScreenState extends State<RemoteScreen> {
                   ),
                 ),
               ],
-            ),
-
-            // Bouton Test Alerte aligné sur la gauche
-            Align(
-              alignment: Alignment.centerLeft,
-              child: SizedBox(
-                height: 50,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: isMoving && statusMessage.contains("Alerte") ? const Color(0xFFFF45DD) : const Color(0xFFFFCAEA),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-                  ),
-                  onPressed: boutonAlerteActif
-                      ? () => _sendOrder('A', 3, "Alerte ! (3s)")
-                      : null,
-                  child: Text(
-                    isMoving && statusMessage.contains("Alerte") ? 'Alerte !' : 'Test Alerte',
-                    style: const TextStyle(
-                      fontSize: 16,
-                      color: Color(0xFF10288C),
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ), // 1. Ferme TextStyle, 2. Ferme Text
-                ), // 3. Ferme ElevatedButton
-              ), // 4. Ferme SizedBox
-            ), // Ferme Align
-		
+            )
 
             // Zone d'affichage des capteurs de télémétrie
             Card(
