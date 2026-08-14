@@ -255,7 +255,7 @@ class _RemoteScreenState extends State<RemoteScreen> {
                   ),
                 ),
               ],
-            )
+            ),
 
             // Zone d'affichage des capteurs de télémétrie
             Card(
