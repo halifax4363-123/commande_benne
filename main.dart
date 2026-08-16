@@ -231,7 +231,7 @@ class _RemoteScreenState extends State<RemoteScreen> {
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                       ),
                       onPressed: boutonMonterActif
-                          ? () => _sendOrder('M', 12, "Montée en cours (12s)...")
+                          ? () => _sendOrder('M', 14, "Montée en cours...")
                           : null,
                       child: const Text('Monter', style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold)),
                     ),
@@ -248,7 +248,7 @@ class _RemoteScreenState extends State<RemoteScreen> {
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                       ),
                       onPressed: boutonDescendreActif
-                          ? () => _sendOrder('D', 12, "Descente en cours (12s)...")
+                          ? () => _sendOrder('D', 14, "Descente en cours...")
                           : null,
                       child: const Text('Descendre', style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold)),
                     ),
